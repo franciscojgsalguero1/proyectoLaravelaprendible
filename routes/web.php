@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PortfolioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,5 +73,10 @@ Route::get('/', function() {
 })->name('home');
 
 Route::view('/about','about')->name('about');
-Route::view('/portfolio')->name('portfolio');
+Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
 Route::view('/contact','contact')->name('contact');
+
+//Route::resource('projects', PortfolioController::class);
+//Route::resource('projects', PortfolioController::class)->only(['index', 'show']);
+//Route::resource('projects', PortfolioController::class)->except(['index', 'show']);
+
