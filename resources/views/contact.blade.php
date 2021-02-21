@@ -4,6 +4,7 @@
 
 @section('content')
     <h1>@lang('Contact')</h1>
+    
     <form method="post" action="{{route('message.store')}}">
         @csrf
         <!--{{ $errors }}<br>
