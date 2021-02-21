@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MessageReceived;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
-class PortfolioController extends Controller
+class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,14 +15,8 @@ class PortfolioController extends Controller
      */
     public function index()
     {
-        $portfolio = [
-            ['title' => 'Proyecto #1'],
-            ['title' => 'Proyecto #2'],
-            ['title' => 'Proyecto #3'],
-            ['title' => 'Proyecto #4'],
-        ];
+        //
         
-        return view('portfolio', compact('portfolio'));
     }
 
     /**
@@ -41,7 +37,23 @@ class PortfolioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //return $request->get('email');
+        //return request('email');
+        //return $request;
+        $msg = request()->validate([
+            'name'=>'required',
+            'email' => 'required|email',
+            'subject' => 'required',
+            'contect' => 'required|min:3'
+        ], [
+            'name.required' => 'Necesito tu nombre',
+        ]);
+        
+        Mail::to('franciscojgsspam@gmail.com')->queue(new MessageReceived($msg));
+        
+        return new MessageReceived($msg);
+        
+        return 'Mensaje enviado.';
     }
 
     /**

@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,25 @@ use App\Http\Controllers\PortfolioController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// permite traducir al español con los archivos que tenemos
+App::setLocale('es');
+
+Route::get('/', function() {
+    $nombre = "Invitado";
+    return view('home', compact('nombre'));
+})->name('home');
+
+Route::view('/about','about')->name('about');
+Route::get('/project', [ProjectController::class, 'index'])->name('projects.index');
+Route::get('/project/create', [ProjectController::class, 'create'])->name('create');
+Route::patch('/project/{project}', [ProjectController::class, 'update'])->name('projects.update');
+Route::get('/project/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
+Route::post('/project/store', [ProjectController::class, 'store'])->name('projects.store');
+Route::get('/project/{project}', [ProjectController::class, 'show'])->name('projects.show');
+Route::view('/contact','contact')->name('contact');
+Route::post('/contact', [MessageController::class, 'store'])->name('message.store');
+
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -66,15 +86,6 @@ Route::get('/', function() {
     //return view('home', compact('nombre'));
 })->name('home');*/
 
-
-Route::get('/', function() {
-    $nombre = "Invitado";
-    return view('home', compact('nombre'));
-})->name('home');
-
-Route::view('/about','about')->name('about');
-Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
-Route::view('/contact','contact')->name('contact');
 
 //Route::resource('projects', PortfolioController::class);
 //Route::resource('projects', PortfolioController::class)->only(['index', 'show']);
